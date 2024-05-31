@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LADA</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/theleagueof/lada-webfont@latest/Lada/lada.css" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <a href="#"><img src="lada_logotip.png" alt="LADA"></a>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#">Модели</a></li>
+                    <li><a href="#">О компании</a></li>
+                    <li><a href="#">Новости</a></li>
+                    <li><a href="#">Сервисы</a></li>
+                    <li><a href="#">Контакты</a></li>
+                </ul>
+            </nav>
+            <div class="header-right">
+                <a href="#"><i class="fas fa-user-circle"></i></a>
+            </div>
+        </div>
+    </header>
+    <main>
+        <section class="hero">
+            <div class="carousel">
+                <div class="carousel-item active">
+                    <img src="first.webp" alt="Hero 1">
+                    <div class="carousel-caption">
+                        <h1>3 ЭТАП РОССИЙСКОЙ СЕРИИ КОЛЬЦЕВЫХ ГОНОК</h1>
+                        <a href="#" class="btn">Подробнее</a>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="second.webp" alt="Hero 2">
+                    <div class="carousel-caption">
+                        <h1>ВЫГОДА ПО ВСЕМ НАПРАВЛЕНИЯМ СЕРВИСА</h1>
+                        <a href="#" class="btn">Подробнее</a>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="third.webp" alt="Hero 3">
+                    <div class="carousel-caption">
+                        <h1>ОТКРОЙТЕ ДЛЯ СЕБЯ МИР LADA</h1>
+                        <a href="#" class="btn">Подробнее</a>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-controls">
+                <span class="prev" onclick="prevSlide()"><i class="fas fa-chevron-left"></i></span>
+                <span class="next" onclick="nextSlide()"><i class="fas fa-chevron-right"></i></span>
+            </div>
+        </section>
+        <section class="models">
+            <div class="container">
+                <h2 class="section-title">Выбери свой автомобиль LADA</h2>
+                <div class="model-tabs">
+                    <button class="tab" data-model="granta">Granta</button>
+                    <button class="tab" data-model="vesta">Vesta</button>
+                    <button class="tab" data-model="niva-travel">Niva Travel</button>
+                    <button class="tab" data-model="niva-legend">Niva Legend</button>
+                </div>
+                <div class="model-content">
+                    <div class="model-item active" id="granta">
+                        <img src="granta.jpg" alt="LADA Granta">
+                        <h3>LADA Granta</h3>
+                        <a href="#" class="btn">Подробнее</a>
+                    </div>
+                    <div class="model-item" id="vesta">
+                        <img src="vesta.jpg" alt="LADA Vesta">
+                        <h3>LADA Vesta</h3>
+                        <a href="#" class="btn">Подробнее</a>
+                    </div>
+                    <div class="model-item" id="niva-travel">
+                        <img src="niva-travel.jpg" alt="LADA Niva Travel">
+                        <h3>LADA Niva Travel</h3>
+                        <a href="#" class="btn">Подробнее</a>
+                    </div>
+                    <div class="model-item" id="niva-legend">
+                        <img src="niva-legend.jpg" alt="LADA Niva Legend">
+                        <h3>LADA Niva Legend</h3>
+                        <a href="#" class="btn">Подробнее</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 LADA. Все права защищены.</p>
+        </div>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>
