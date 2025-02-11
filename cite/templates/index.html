@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Work Calendar</title>
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/locales/ru.min.js" defer></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            background: #f4f4f4;
+        }
+        #calendar {
+            max-width: 900px;
+            margin: 20px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .form-container {
+            margin: 20px 0;
+        }
+        .form-container input, .form-container button {
+            padding: 10px;
+            margin: 5px;
+            font-size: 16px;
+        }
+        .office {
+            background-color: #81d4fa !important; /* Голубой (офис) */
+        }
+        .home {
+            background-color: #b3e5fc !important; /* Светло-голубой (дом) */
+        }
+    </style>
+</head>
+<body>
+
+    <div id="calendar"></div>
+
+    <div class="form-container">
+        <input type="number" id="hours" placeholder="Отработанные часы">
+        <button onclick="saveData('офис')">Сохранить (офис)</button>
+        <button onclick="saveData('дом')">Сохранить (дом)</button>
+        <button onclick="deleteData()">Удалить данные</button>
+        <button onclick="getTotalHours()">Посчитать часы за месяц</button>
+        <p id="total-hours"></p>
+    </div>
+
+    <script>
+        let selectedDate = null;
+        let calendar;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeCalendar();
+            loadData();
+        });
+
+        function initializeCalendar() {
+            const calendarEl = document.getElementById('calendar');
+            calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                locale: 'ru',
+                firstDay: 1,
+                dateClick: function(info) {
+                    selectedDate = info.dateStr;
+                    alert("Выбрана дата: " + selectedDate);
+                },
+                events: function(fetchInfo, successCallback, failureCallback) {
+                    fetch('/get')
+                        .then(response => response.json())
+                        .then(data => {
+                            let events = data.map(entry => ({
+                                title: entry.hours + " ч (" + entry.work_type + ")",
+                                start: entry.date,
+                                classNames: entry.work_type === "офис" ? "office" : "home"
+                            }));
+                            successCallback(events);
+                        })
+                        .catch(error => {
+                            console.error('Ошибка загрузки событий:', error);
+                            failureCallback(error);
+                        });
+                }
+            });
+            calendar.render();
+        }
+
+        async function saveData(workType) {
+            const hours = document.getElementById('hours').value;
+            if (!selectedDate || !hours) {
+                alert("Выберите дату и введите часы!");
+                return;
+            }
+
+            const response = await fetch('/save', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ date: selectedDate, hours: parseInt(hours), work_type: workType }),
+            });
+
+            const result = await response.json();
+            alert(result.message);
+            loadData();
+        }
+
+        async function deleteData() {
+            if (!selectedDate) {
+                alert("Выберите дату для удаления!");
+                return;
+            }
+
+            const response = await fetch('/delete', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ date: selectedDate }),
+            });
+
+            const result = await response.json();
+            alert(result.message || result.error);
+            loadData();
+        }
+
+        async function getTotalHours() {
+            const date = new Date();
+            const month = date.getMonth() + 1;
+            const year = date.getFullYear();
+
+            const response = await fetch(`/total_hours?month=${month}&year=${year}`);
+            const result = await response.json();
+
+            document.getElementById("total-hours").innerText = `Всего часов за ${month}.${year}: ${result.total_hours}`;
+        }
+
+        async function loadData() {
+            calendar.refetchEvents();
+        }
+    </script>
+
+</body>
+</html>
+
